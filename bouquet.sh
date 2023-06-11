@@ -1,6 +1,6 @@
 #!/bin/sh
 # -*- coding: utf-8 -*-
-chmod 755 /home/root/bouquet.sh
+
 
 bq_name="userbouquet.skyicam_single.tv"
 bq_datei_local="/etc/enigma2/${bq_name}"
