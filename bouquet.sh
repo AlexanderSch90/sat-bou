@@ -1,7 +1,6 @@
 #!/bin/sh
 # -*- coding: utf-8 -*-
 
-
 bq_name="userbouquet.skyicam_single.tv"
 bq_datei_local="/etc/enigma2/${bq_name}"
 bq_datei_online="https://github.com/newbond/sat-bou/raw/main/${bq_name}"
@@ -10,13 +9,7 @@ log_datei="/tmp/bouquet.log"
 log_datei_max=65000
 bq_eintrag="#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET \"$bq_name\" ORDER BY bouquet"
 
-
-hilfe_nachricht="
-VERWENDUNG:
-    $0 install ......... um das BOUQUET in die Enigma2-Bouquet-Favoritenliste (/etc/enigma2/bouquets.tv) zu installieren.
-    $0 entferne ........ um das BOUQUET in die Enigma2-Bouquet-Favoritenliste (/etc/enigma2/bouquets.tv) zu entfernen.
-    $0 update .......... um das BOUQUET herunterzuladen und zu ersetzen, wenn eine neuere Version online ist.
-"
+hilfe_nachricht="ohne Argumente ausführen"
 
 bqLog() 
 {
@@ -71,46 +64,32 @@ update_austausch_userbouquet() {
     fi
 }
 
-case "$1" in
-    install)
+# Fallunterscheidung basierend auf dem Skriptaufruf
+if [ "$#" -eq 0 ]; then
+    # Wenn keine Argumente �bergeben wurden, f�hre die Update-Aktion aus
         if ! cat /etc/enigma2/bouquets.tv | grep -w "$bq_eintrag" > /dev/null; then
             sed -i "1 a $bq_eintrag" /etc/enigma2/bouquets.tv
             [ -f $bq_datei_local ] || touch $bq_datei_local 
-            update_austausch_userbouquet
-            services_neu_laden
         fi
-        ;;
-    entferne)
-        sed -i "/$bq_eintrag/d" /etc/enigma2/bouquets.tv
-        rm -f $bq_datei_local
-        services_neu_laden
-        ;;
-    update)        
         if ist_standby; then
             update_austausch_userbouquet
             services_neu_laden
 			
 		elif not_standby; then
 			echo "Box ist nicht im Standby Modus"
-			read -p "Box im Standby versetzen? Enter oder j drücken, oder eine andere Taste zum beenden:" A
-			if [ "$A" == "" -o "$A" == "j" -o "$A" == "J" -o "$A" == "y" -o "$A" == "Y" ];then
 			echo "Box geht in Standy und aktualisiert $bq_datei_local"
 			standby
 			update_austausch_userbouquet
 			services_neu_laden
 			echo "Box aufwachen"
 			wakeup
-			else
-			echo "Script wurde beendet"
-			fi
         else
             bqLog "Sript wurde beendet"
         fi
-        ;;
-    *)
-        echo "$hilfe_nachricht"
-        ;;
-esac
+else
+    # Ansonsten zeige die Hilfe-Nachricht
+    echo "$hilfe_nachricht"
+fi
 
 rm -f $tmp_datei
 bqLog "---------------------------------------------------"
