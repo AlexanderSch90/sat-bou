@@ -58,10 +58,6 @@ pruef_austausch_userbouquet() {
     
     if wget -q -O $tmp_datei "$bq_datei_online" > /dev/null 2>&1; then
         bqLog "$bq_datei_online wurde heruntergeladen"
-    else
-        bqLog "$bq_datei_online download fehlgeschlagen!"
-    fi
-    
     if [ -f "$tmp_datei" ] && diff -aw $tmp_datei $bq_datei_local > /dev/null 2>&1; then
         bqLog "$bq_datei_local wurde nicht aktualisiert (der Inhalt der Dateien ist derselbe)"
     else
@@ -80,7 +76,11 @@ pruef_austausch_userbouquet() {
         else
             bqLog "Sript wurde beendet"
         fi
+    fi 
+    else
+        bqLog "$bq_datei_online download fehlgeschlagen!"
     fi
+    
 }
 
 # eigentliches Skript
