@@ -3,7 +3,7 @@
 
 bq_name="userbouquet.skyicam_single.tv"
 bq_datei_local="/etc/enigma2/${bq_name}"
-bq_datei_online="https://github.com/newbond/sat-bou/raw/main/${bq_name}"
+bq_datei_online="https://github.com/AlexanderSch90/sat-bou/raw/main/${bq_name}"
 tmp_datei="/tmp/${bq_name}"
 log_datei="/tmp/bouquet.log"
 log_datei_max=65000
@@ -48,6 +48,12 @@ services_neu_laden() {
 }
 
 update_austausch_userbouquet() {
+
+        mv -f $tmp_datei $bq_datei_local
+        bqLog "$bq_datei_local wurde aktualisiert"
+}
+
+pruef_austausch_userbouquet() {
     rm -f $tmp_datei
     
     if wget -q -O $tmp_datei "$bq_datei_online" > /dev/null 2>&1; then
@@ -59,18 +65,6 @@ update_austausch_userbouquet() {
     if [ -f "$tmp_datei" ] && diff -aw $tmp_datei $bq_datei_local > /dev/null 2>&1; then
         bqLog "$bq_datei_local wurde nicht aktualisiert (der Inhalt der Dateien ist derselbe)"
     else
-        mv -f $tmp_datei $bq_datei_local
-        bqLog "$bq_datei_local wurde aktualisiert"
-    fi
-}
-
-# Fallunterscheidung basierend auf dem Skriptaufruf
-if [ "$#" -eq 0 ]; then
-    # Wenn keine Argumente �bergeben wurden, f�hre die Update-Aktion aus
-        if ! cat /etc/enigma2/bouquets.tv | grep -w "$bq_eintrag" > /dev/null; then
-            sed -i "1 a $bq_eintrag" /etc/enigma2/bouquets.tv
-            [ -f $bq_datei_local ] || touch $bq_datei_local 
-        fi
         if ist_standby; then
             update_austausch_userbouquet
             services_neu_laden
@@ -86,6 +80,17 @@ if [ "$#" -eq 0 ]; then
         else
             bqLog "Sript wurde beendet"
         fi
+    fi
+}
+
+# eigentliches Skript
+if [ "$#" -eq 0 ]; then
+    # Wenn keine Argumente �bergeben wurden, f�hre die Update-Aktion aus
+        if ! cat /etc/enigma2/bouquets.tv | grep -w "$bq_eintrag" > /dev/null; then
+            sed -i "2 a $bq_eintrag" /etc/enigma2/bouquets.tv
+            [ -f $bq_datei_local ] || touch $bq_datei_local 
+        fi
+        pruef_austausch_userbouquet
 else
     # Ansonsten zeige die Hilfe-Nachricht
     echo "$hilfe_nachricht"
