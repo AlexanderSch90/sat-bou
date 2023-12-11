@@ -5,7 +5,7 @@
 #DESCRIPTION Sky Cinema Premieren HD
 #SERVICE 1:0:19:87:B:85:21:0:0:0:http%3a//127.0.0.1%3a17999/1%3a0%3a19%3a87%3aB%3a85%3aC00000%3a0%3a0%3a0%3a:Sky Cinema Premieren +24 HD
 #DESCRIPTION Sky Cinema Premieren +24 HD
-#SERVICE 1:0:16:8:3:85:21:0:0:0:http%3a//127.0.0.1%3a17999/1%3a0%3a16%3a8%3a3%3a85%3aC00000%3a0%3a0%3a0%3a:Sky Cinema Fun
+#SERVICE 1:0:16:8:9:85:21:0:0:0:http%3a//127.0.0.1%3a17999/1%3a0%3a16%3a8%3a9%3a85%3aC00000%3a0%3a0%3a0%3a:Sky Cinema Fun
 #DESCRIPTION Sky Cinema Fun
 #SERVICE 1:0:19:8B:2:85:21:0:0:0:http%3a//127.0.0.1%3a17999/1%3a0%3a19%3a8B%3a2%3a85%3aC00000%3a0%3a0%3a0%3a:Sky Cinema Family HD
 #DESCRIPTION Sky Cinema Family HD
